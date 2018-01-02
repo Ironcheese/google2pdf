@@ -3,7 +3,8 @@
     "description": "Recruitment Skill Test Project",
     "type": "project",
     "require": {
-        "symfony/console": "^4.0"
+        "symfony/console": "^4.0",
+        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.5"
