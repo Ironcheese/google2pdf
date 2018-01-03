@@ -21,3 +21,4 @@ Der Crawler muss also die Paginierung abarbeiten.
 - Status Codes von Google prüfen und entsprechend reagieren
 - Output Verbosity per Input Option steuern
 - Loggin anbieten / einbauen
+- Prüfen ob die PDF schreibbar ist!

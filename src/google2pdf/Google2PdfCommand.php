@@ -57,10 +57,13 @@ class Google2PdfCommand extends Command {
 
         // Render it
         $renderer = new ResultRenderer;
-        $renderer->setItems($parser->getItems($maxResults))
-            ->setTemplate(__DIR__.'/template.php')
-            ->render();
-        $renderer->generatePDF();
+        $renderer->setItems($parser->getItems($maxResults));
+        $renderer->setStats($parser->getStats());
+        $renderer->setSearchTerm($searchTerm);
+        $renderer->setMaxItems($maxResults);
+
+        $output = $renderer->render(__DIR__.'/template.php');
+        $renderer->generatePDF($output);
 
         // Dev Output
 //        $output->writeln("<info>{$parser->getStats()}</info>");

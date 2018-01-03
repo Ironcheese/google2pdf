@@ -11,6 +11,9 @@ use Dompdf\Dompdf;
 
 class ResultRenderer {
 
+    protected $maxItems;
+    protected $searchTerm;
+    protected $stats = "";
     protected $items = [];
 
     /**
@@ -24,6 +27,10 @@ class ResultRenderer {
         return $this;
     }
 
+    public function setStats($stats) {
+        $this->stats = $stats;
+        return $this;
+    }
 
     public function render(string $templatePath):string {
         // Improvement: Check if Template file exists
@@ -42,6 +49,14 @@ class ResultRenderer {
         // Render the HTML as PDF
         $dompdf->render();
         file_put_contents(BASE_DIR.'/results.pdf', $dompdf->output());
+    }
+
+    public function setSearchTerm(string $searchTerm) {
+        $this->searchTerm = $searchTerm;
+    }
+
+    public function setMaxItems(int $maxResults) {
+        $this->maxItems = $maxResults;
     }
 
 
