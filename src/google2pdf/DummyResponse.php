@@ -9,7 +9,21 @@
 namespace Ironcheese\google2pdf;
 
 
-class DummyResponse
-{
+class DummyResponse {
 
+    protected $page = 0;
+
+    public function __construct(int $page = 0) {
+        $this->page = $page;
+    }
+
+    public function getStatusCode():int {
+        return 200;
+    }
+
+    public function getBody():string {
+        $file = __DIR__."/../google-search_php-backend-developer_page-{$this->page}.html";
+        //$file = __DIR__."/../debug-{$this->page}.html";
+        return file_get_contents($file);
+    }
 }

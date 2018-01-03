@@ -9,7 +9,28 @@
 namespace Ironcheese\google2pdf;
 
 
-class DummyClient
-{
+class DummyClient {
+
+    /**
+     * fake request method
+     *
+     * @param string $method
+     * @param string $url
+     * @return DummyResponse
+     */
+    public function request(string $method, string $url) {  
+        $query = parse_url($url, PHP_URL_QUERY);
+        $page = 0; // First request has no "start" param
+
+        if ($query) {
+            $params = [];
+            parse_str($query, $params);
+            if (isset($params['start'])) {
+                $page = ceil((int)$params['start'] / GoogleCrawler::RESULTS_PER_PAGE);
+            }
+        }
+
+        return new DummyResponse($page);
+    }
 
 }
