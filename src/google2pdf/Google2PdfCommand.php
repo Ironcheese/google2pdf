@@ -53,6 +53,14 @@ class Google2PdfCommand extends Command {
         $parser->setContent($crawler->getResponseData());
         $parser->parse();
 
+        $items = $parser->getItems($maxResults);
+
+        // Dev Output
+        foreach ($items as $index => $item) {
+            echo "=============\n$index:\n";
+            echo $item->title."\n".$item->href."\n".$item->description."\n\n";
+        }
+
         // Guzzle make request
         // wait for response
         // parse html response
