@@ -51,9 +51,9 @@ class GoogleCrawler {
     /**
      * GoogleCrawler constructor.
      *
-     * @param ClientInterface $client
+     * @param $client
      */
-    public function __construct(ClientInterface $client) {
+    public function __construct(/* ClientInterface */ $client) {
         $this->client = $client;
     }
 
@@ -69,6 +69,7 @@ class GoogleCrawler {
         $this->setSearchTerm($searchTerm);
         $this->setMaxResults($maxResults);
 
+        // How many request shall we make?
         $trips = ceil($this->getMaxResults() / self::RESULTS_PER_PAGE);
         for($i = 0; $i < $trips; $i++) {
             $this->fetch($i);

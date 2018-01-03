@@ -46,7 +46,7 @@ class Google2PdfCommand extends Command {
         $searchTerm = $input->getArgument('searchTerm');
         $maxResults = (int)$input->getArgument('maxResults');
 
-        $crawler = new GoogleCrawler(new HttpClient);
+        $crawler = new GoogleCrawler(new DummyClient);
         $crawler->startCrawling($searchTerm, $maxResults);
 
         $parser = new GoogleResponseParser;
