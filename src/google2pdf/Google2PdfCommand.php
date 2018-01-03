@@ -46,7 +46,7 @@ class Google2PdfCommand extends Command {
         $searchTerm = $input->getArgument('searchTerm');
         $maxResults = (int)$input->getArgument('maxResults');
 
-        $crawler = new GoogleCrawler(new DummyClient);
+        $crawler = new GoogleCrawler(new HttpClient);
         $crawler->startCrawling($searchTerm, $maxResults);
 
         $parser = new GoogleResponseParser;
@@ -56,9 +56,14 @@ class Google2PdfCommand extends Command {
         $items = $parser->getItems($maxResults);
 
         // Dev Output
+        $output->writeln("<info>{$parser->getStats()}</info>");
+        $output->writeln("----------------------------------------");
         foreach ($items as $index => $item) {
-            echo "=============\n$index:\n";
-            echo $item->title."\n".$item->href."\n".$item->description."\n\n";
+            $output->writeln("<info>Result: $index</info>");
+            $output->writeln($item->title);
+            $output->writeln($item->href);
+            $output->writeln("<comment>$item->description</comment>");
+            $output->writeln("----------------------------------------");
         }
 
         // Guzzle make request

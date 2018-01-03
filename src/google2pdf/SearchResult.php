@@ -35,10 +35,21 @@ class SearchResult {
         $this->parseDescription();
     }
 
+    /**
+     * parse the title and its href
+     * -> Beware: Href needs some serious sanitizing!
+     */
     public function parseTitle() {
         $titleNode = $this->dom->query(".//h3[@class='r']/a", $this->node)->item(0);
         $this->title = utf8_decode($titleNode->nodeValue);
-        $this->href = $titleNode->getAttribute('href');
+
+        // Cleanup href Attribute
+        $this->href = str_replace(['/url?q='], '', $titleNode->getAttribute('href'));
+        $this->href = preg_replace(
+            "/(&sa=[A-Z])(&ved=[0-9a-zA-Z\D]{40})(&usg=[0-9a-zA-Z\D]{28})/",
+            "",
+            $this->href
+        );
     }
 
     public function parseDescription() {

@@ -89,6 +89,7 @@ class GoogleCrawler {
      */
     protected function fetch(int $cycle) {
         $response = $this->client->request('GET', $this->buildURL($cycle));
+        // @Todo: Catch other Status Codes...
         if ($response->getStatusCode() === 200) {
             $this->responseData[] = $response->getBody();
         }
