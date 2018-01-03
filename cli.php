@@ -11,6 +11,8 @@ use Symfony\Component\Console\Application;
 
 require 'vendor/autoload.php';
 
+define('BASE_DIR', __DIR__);
+
 $app = new Application('Google2Pdf', "0.0.1");
 $app->add(new Google2PdfCommand());
 

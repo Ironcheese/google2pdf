@@ -46,25 +46,32 @@ class Google2PdfCommand extends Command {
         $searchTerm = $input->getArgument('searchTerm');
         $maxResults = (int)$input->getArgument('maxResults');
 
-        $crawler = new GoogleCrawler(new HttpClient);
+        // Get the information
+        $crawler = new GoogleCrawler(new DummyClient);
         $crawler->startCrawling($searchTerm, $maxResults);
 
+        // Parse it
         $parser = new GoogleResponseParser;
-        $parser->setContent($crawler->getResponseData());
-        $parser->parse();
+        $parser->setContent($crawler->getResponseData())
+            ->parse();
 
-        $items = $parser->getItems($maxResults);
+        // Render it
+        $renderer = new ResultRenderer;
+        $renderer->setItems($parser->getItems($maxResults))
+            ->setTemplate(__DIR__.'/template.php')
+            ->render();
+        $renderer->generatePDF();
 
         // Dev Output
-        $output->writeln("<info>{$parser->getStats()}</info>");
-        $output->writeln("----------------------------------------");
-        foreach ($items as $index => $item) {
-            $output->writeln("<info>Result: $index</info>");
-            $output->writeln($item->title);
-            $output->writeln($item->href);
-            $output->writeln("<comment>$item->description</comment>");
-            $output->writeln("----------------------------------------");
-        }
+//        $output->writeln("<info>{$parser->getStats()}</info>");
+//        $output->writeln("----------------------------------------");
+//        foreach ($items as $index => $item) {
+//            $output->writeln("<info>Result: $index</info>");
+//            $output->writeln($item->title);
+//            $output->writeln($item->href);
+//            $output->writeln("<comment>$item->description</comment>");
+//            $output->writeln("----------------------------------------");
+//        }
 
         // Guzzle make request
         // wait for response

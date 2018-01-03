@@ -18,6 +18,7 @@ class GoogleResponseParser {
 
     public function setContent($content) {
         $this->content = $content;
+        return $this;
     }
 
     public function parse() {
