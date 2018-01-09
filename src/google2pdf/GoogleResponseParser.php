@@ -11,6 +11,8 @@ namespace Ironcheese\google2pdf;
 
 class GoogleResponseParser {
 
+    use Logger;
+
     protected $content = [];
     protected $items = [];
 
@@ -22,6 +24,7 @@ class GoogleResponseParser {
     }
 
     public function parse() {
+        $this->logger->info("Parsing Response");
         foreach ($this->content as $index => $content) {
             $doc = new \DOMDocument();
             $doc->loadHTML($content, LIBXML_NOERROR|LIBXML_NOWARNING); // Google Markup is... well,... messy!

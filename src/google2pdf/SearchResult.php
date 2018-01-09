@@ -54,7 +54,9 @@ class SearchResult {
 
     public function parseDescription() {
         $decNode = $this->dom->query(".//span[@class='st']", $this->node)->item(0);
-        $this->description = utf8_decode($decNode->nodeValue);
+        if ($decNode) {
+            $this->description = utf8_decode($decNode->nodeValue);
+        }
     }
 
 }

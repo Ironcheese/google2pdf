@@ -13,6 +13,8 @@ use GuzzleHttp\ClientInterface;
 
 class GoogleCrawler {
 
+    use Logger;
+
     /**
      * Base Google URL for searching
      */
@@ -69,11 +71,18 @@ class GoogleCrawler {
         $this->setSearchTerm($searchTerm);
         $this->setMaxResults($maxResults);
 
+        $this->logger->info("Starting to crawl for '$searchTerm' with max $maxResults results");
+
         // How many request shall we make?
         $trips = ceil($this->getMaxResults() / self::RESULTS_PER_PAGE);
         for($i = 0; $i < $trips; $i++) {
             $this->fetch($i);
-            // Add timeout to prevent captcha blockage
+
+            if ($i > 0) {
+                // Add timeout to prevent captcha blockage
+                $this->logger->debug("Sleeping for " . $this->getTimeout() . " seconds");
+                sleep($this->getTimeout());
+            }
         }
     }
 
@@ -88,10 +97,16 @@ class GoogleCrawler {
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function fetch(int $cycle) {
-        $response = $this->client->request('GET', $this->buildURL($cycle));
-        // @Todo: Catch other Status Codes...
+        $url = $this->buildURL($cycle);
+        $this->logger->debug("Seding request to: $url");
+        $response = $this->client->request('GET', $url);
+
         if ($response->getStatusCode() === 200) {
             $this->responseData[] = $response->getBody();
+            $this->logger->debug("Request Cycle $cycle -> OK");
+        } else {
+            // @Todo: Catch other Status Codes...
+            $this->logger->warning("Google Response Code: ".$response->getStatusCode());
         }
     }
 
