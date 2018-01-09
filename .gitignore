@@ -1,4 +1,5 @@
 .idea
 vendor
 *.pdf
-generated-pdfs/
+generated-pdfs/*
+!generated-pdfs/.gitkeep
